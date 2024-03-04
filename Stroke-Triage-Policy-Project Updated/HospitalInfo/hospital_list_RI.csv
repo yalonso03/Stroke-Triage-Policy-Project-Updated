@@ -1,0 +1,19 @@
+Hospital,City,Lat,Lon,Performance Metric,Type
+RhodeIslandHospital,Providence,41.8115847,-71.49664063,60,CSC
+HasbroChildrensHospital,Providence,41.8113031,-71.40846695,60,PSC
+MiriamHospital,Providence,41.85211847,-71.39804194,60,PSC
+RogerWilliamsHospital,Providence,41.83517677,-71.43538007,60,PSC
+StJosephsHospital,Providence,41.85662449,-71.46019132,60,PSC
+SouthCountyHospital,South Kingstown,41.43163462,-71.49664063,60,PSC
+KentCountyHospital,Warwick,41.70552167,-71.47788389,60,PSC
+LandmarkMedicalCenter,Woonsocket,42.00499487,-71.49556752,60,PSC
+WesterlyHospital,Westerly,41.36254752,-71.8256293,60,PSC
+BradleyHospital,East Providence,41.79218178,-71.36715324,60,CLINIC
+ButlerHospital,Providence,41.84278627,-71.38080986,60,CLINIC
+EleanorSlaterHospitalCranston,Cranston,41.74509487,-71.4632541,60,CLINIC
+EleanorSlaterHospitalZambaronoUnitBurrillville,Burrillville,41.99724079,-71.76254638,60,CLINIC
+NewportHospital,Newport,41.49691525,-71.30621855,60,CLINIC
+OurLadyOfFatimaHospital,North Providence,41.8555964,-71.45950482,60,CLINIC
+ProvidenceVAHospital,Providence,41.83228582,-71.43359663,60,CLINIC
+RehabilitationHospitalOfRhodeIsland,North Smithfield,41.98168836,-71.51287044,60,CLINIC
+WomenAndInfantsHospitalOfRhodeIsland,Providence,41.81057269,-71.40688006,60,CLINIC

@@ -1,0 +1,6 @@
+[deps]
+GMT = "5752ebe1-31b9-557e-87aa-f909b540aa54"
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+LAPACK32_jll = "17f450c3-bd24-55df-bb84-8c51b4b939e3"
+Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"

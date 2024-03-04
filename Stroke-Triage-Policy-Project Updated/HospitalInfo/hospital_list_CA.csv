@@ -1,0 +1,46 @@
+Hospital,City,Lat,Lon,Performance Metric,Type
+ChineseHospital,San Francisco,37.795471,-122.408926,60,CLINIC
+CPMCDaviesCampus,San Francisco,37.768257,-122.434621,60,CLINIC
+CPMCMissionBernalCampus,San Francisco,37.74794001,-122.4206672,60,CLINIC
+CPMCVanNessCampus,San Francisco,37.78615807,-122.4222698,60,CLINIC
+KaiserPermanenteSanFranciscoMedicalCenter,San Francisco,37.78059528,-122.4639375,60,CLINIC
+KaiserPermanenteSouthSanFranciscoMedicalCenter,San Francisco,37.65971679,-122.4399394,60,PSC
+LagunaHondaHospitalandRehabilitationCenter,San Francisco,37.77475609,-122.4259777,60,CLINIC
+SaintFrancisMemorialHospital,San Francisco,37.79135415,-122.4166913,60,CLINIC
+SaintMarysMedicalCenter,San Francisco,37.77412939,-122.4537558,60,CLINIC
+SanFranciscoVAMedicalCenter,San Francisco,37.78250576,-122.505408,60,CLINIC
+UCSFBettyIreneMooreWomensHospital,San Francisco,37.76557446,-122.3902339,60,CLINIC
+UCSFHelenDillerMedicalCenteratParnassusHeights,San Francisco,37.76445187,-122.4572954,60,CLINIC
+UCSFMedicalCenteratMissionBay,San Francisco,37.76797778,-122.3921499,60,CLINIC
+ZuckerbergSanFranciscoGeneralHospitalandTraumaCenter,San Francisco,37.75560425,-122.4053607,60,CLINIC
+AltaBatesSummitMedicalCenter,Oakland,37.85577528,-122.2571922,60,CLINIC
+OaklandMedicalCenter,Oakland,37.85181176,-122.2667394,60,CLINIC
+WilmaChanHighlandHospital,Oakland,37.79809848,-122.2306497,60,CLINIC
+SantaClaraMedicalCenter,Santa Clara,37.31449201,-121.9340129,60,CLINIC
+SantaClaraValleyMedicalCenter,San Jose,37.31465608,-121.9339972,60,PSC
+OConnorHospital,San Jose,37.32839739,-121.9385184,60,PSC
+RegionalMedicalCenterofSanJose,San Jose,37.3629518,-121.8498532,60,CSC
+GoodSamaritanHospital,San Jose,37.25188445,-121.9466178,60,CSC
+PaloAltoVAMedicalCenter,Palo Alto,37.4053271,-122.1402095,60,CLINIC
+StanfordHospital,Stanford,37.43438484,-122.1767745,60,CSC
+AlamedaHospital,Alameda,37.76282964,-122.2541762,60,CLINIC
+ProvidenceQueenoftheValleyMedicalCenter,Napa,38.32466031,-122.2970957,60,CLINIC
+AntiochMedicalCenter,Antioch,37.9539314,-121.7752308,60,CLINIC
+SutterDeltaMedicalCenter,Antioch,37.98284842,-121.8029004,60,CLINIC
+SanMateoMedicalCenter,San Mateo,37.53104658,-122.3002492,60,CLINIC
+MarinHealthMedicalCenter,GreenBrae,37.94739136,-122.5361331,60,CLINIC
+WashingtonHospitalHealthcareSystem,Fremont,37.55742625,-121.9792659,60,CLINIC
+WalnutCreekMedicalCenter,Walnut Creek,37.89322451,-122.0591155,60,CLINIC
+FairmontRehabilitationandWellness,San Leandro,37.72464591,-122.1181158,60,CLINIC
+ProvidenceSantaRosaMemorialHospital,Santa Rosa,38.44398217,-122.7013127,60,CLINIC
+SantaRosaHospital,Santa Rosa,38.4766846,-122.7273489,60,CLINIC
+SutterSantaRosaRegionalHospital,Santa Rosa,38.49521501,-122.7521091,60,CLINIC
+SonomaValleyHospital,Sonoma,38.28831201,-122.46533,60,CLINIC
+KaiserPermanenteRedwoodCity,Redwood City,37.48972397,-122.2242812,60,CSC
+ElCaminoHospital,Mountain View,37.369215266482,-122.07951408471517,60,PSC
+KaiserPermanenteSantaClara,Santa Clara,37.33630289147986,-121.99905530448746,60,PSC
+KaiserPermanenteSanJose,San Jose,37.241288642039216,-121.80199743661079,60,PSC
+SaintLouiseHospital,Gilroy,37.03724757286102,-121.57191183309851,60,PSC
+MillsPeninsulaHospital,Burlingame,37.59245898881127,-122.38238959380485,60,PSC
+SequoiaHospital,Redwood City,37.4802642767328,-122.2543788504184,60,PSC
+SetonMedicalCenter,Moss Beach,37.528984667042806,-122.50776717839497,60,PSC
