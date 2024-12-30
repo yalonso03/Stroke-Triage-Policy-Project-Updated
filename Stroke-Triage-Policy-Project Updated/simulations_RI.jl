@@ -3,7 +3,7 @@ Modeling Stroke Patient Triage and Transport in CA with MDPs
 Autumn 2023 CS199/CS195 Project
 Emily Molins and Yasmine Alonso
 
-File: simulationsRI.jl
+File: simulations_RI.jl
 --------------------
 This file runs many simulations of a random patient (with random field location, random stroke type), and produces the 
 recommended actions to take (via our policy, and California's current policy). Uses STPMDP.jl to produce the MDP.
@@ -13,48 +13,25 @@ This is for the Rhode Island simulations, as their status quo policy is differen
 
 using CSV
 using DataFrames
-using DelimitedFiles
-using D3Trees
-using DiscreteValueIteration
-using Graphs
-using LaTeXStrings
-using LinearAlgebra
-using LocalApproximationValueIteration
-using MCTS
-using POMDPModels
-using POMDPModelTools
-using POMDPTools
-using POMDPs
-using Parameters
-using Plots
-using Printf
-using PyCall
-using QuickPOMDPs
-using QMDP
-using Random
-using RollingFunctions
-using SpecialFunctions
-using Statistics
-using TabularTDLearning
-using LinearAlgebra
 using StatsBase
-using GR
+using Random
+using Plots
 using StatsPlots
-using Distributions
 using ProgressBars
+using Distributions
 
 Random.seed!(1) 
 
-include("STPMDP.jl")
+include("STPMDP_ORS.jl")
 
-N_SIMULATIONS = 100
+N_SIMULATIONS = 3
 
 
 # Ok i think googleAPI functions failing because above sample_location may be coming up with points in the water lol and then u cant
 # get driving directions. for now 30 random points 
 function sample_location()
     # Define the filename for the CSV file
-    csv_filename = "PatientPoints/points_on_land_RI.csv"
+    csv_filename = "Stroke-Triage-Policy-Project Updated/PatientPoints/points_on_land_RI.csv"
 
     df = CSV.File(csv_filename) |> DataFrame
 
@@ -137,7 +114,7 @@ for result in results
     push!(CSC_rewards, result.CSC_reward)
 end
 
-outfile = open("SimResults/100pts1RI.csv", "w")
+outfile = open("Stroke-Triage-Policy-Project Updated/SimResults/TEST2.csv", "w")
 # Put header
 # Note that nearest_hospital_reward column is actually reward routing to only CSC
 println(outfile, "best_action_reward%nearest_hospital_reward%start_state_latlon")

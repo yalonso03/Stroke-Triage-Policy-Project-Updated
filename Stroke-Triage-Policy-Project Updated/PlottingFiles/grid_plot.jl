@@ -16,45 +16,14 @@ using GMT
 using CSV
 using DataFrames
 using DelimitedFiles
-using D3Trees
-using DiscreteValueIteration
-using Graphs
-using LaTeXStrings
 using LinearAlgebra
-using LocalApproximationValueIteration
-using MCTS
 using POMDPModels
-using POMDPModelTools
-using POMDPTools
 using POMDPs
-using Parameters
-#using Plots
-using Printf
-using PyCall
-using QuickPOMDPs
-using QMDP
 using Random
-using RollingFunctions
-using SpecialFunctions
 using Statistics
-using TabularTDLearning
-using LinearAlgebra
-using StatsBase
-using GR
-using StatsPlots
 using Distributions
-using ProgressBars
 
-include("STPMDP.jl")
-#Random.seed!(1) 
-
-# Samples a random stroke type based on probability of each type. Returns a StrokeType (LVO NLVO HEMORRHAGIC MIMIC)
-#! moved to STPMDP.jl 
-# function sample_stroke_type(MDP)
-#     probabilities = [MDP.p_LVO, MDP.p_nLVO, MDP.p_Hemorrhagic, MDP.p_Mimic]
-#     stroke_types = [LVO, NLVO, HEMORRHAGIC, MIMIC]
-#     return rand(SparseCat(stroke_types, probabilities))
-# end
+include("../STPMDP_original.jl")
 
 myMDP = StrokeMDP()
 
@@ -111,7 +80,7 @@ function make_plot_with_grid(option)
     lon_min, lon_max, lat_min, lat_max = my_region
 
     #! DIMENSIONS OF THE GRID
-    grid_size = 200
+    grid_size = 3
 
     lon_step = (lon_max - lon_min) / grid_size
     lat_step = (lat_max - lat_min) / grid_size
@@ -164,7 +133,7 @@ function make_plot_with_grid(option)
     #println(my_region)
     pcolor(X, Y, colors, cmap=cpt, proj="merc", title=title)
 
-    path = "Figures/" * option * "_hotspot_gridplot.pdf"
+    path = "Stroke-Triage-Policy-Project Updated/Figures" * option * "_hotspot_gridplot.pdf"
     # colorbar!(cmap=cpt, title="Probability of Good Outcome", projection=:mercator)
 
 
