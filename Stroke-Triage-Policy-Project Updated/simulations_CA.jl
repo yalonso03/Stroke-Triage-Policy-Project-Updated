@@ -20,10 +20,9 @@ using Distributions
 
 Random.seed!(1) 
 
-include("Stroke-Triage-Policy-Project Updated/STPMDP_ORS.jl")
+include("STPMDP_ORS.jl")
 
-N_SIMULATIONS = 3
-
+N_SIMULATIONS = 10
 
 # Ok i think googleAPI functions failing because above sample_location may be coming up with points in the water lol and then u cant
 # get driving directions. for now 30 random points 
@@ -89,7 +88,6 @@ function run_simulations(myMDP)
         travel_time = calculate_travel_time(sampled_start_state.loc, next_state.loc)
         travel_time_nh = calculate_travel_time(sampled_start_state.loc, nh_next_state.loc)
 
-
         # Store the results
         push!(results, SimulationResult(best_action_reward, nearest_hospital_reward, travel_time, travel_time_nh, 
         sampled_start_state, action_string, action_string_nh))
@@ -100,8 +98,6 @@ end
 # Initialize the arrays to store the rewards
 best_action_rewards = Float64[]
 nearest_hospital_rewards = Float64[]
-
-
 
 # Results stores our simulation results
 results = run_simulations(myMDP)
@@ -255,9 +251,3 @@ println("Mean: ", mean_recommended, ", Median: ", median_recommended, ", Standar
 println("Nearest Hospital Action Statistics:")
 println("Mean: ", mean_nearest_hospital, ", Median: ", median_nearest_hospital, ", Standard Deviation: ", std_nearest_hospital)
 
-
-# Now plot the bar chart
-bar(all_actions, [recommended_action_values nearest_hospital_action_values], label=["Best Action" "Nearest Hospital"], title="Action Counts Comparison", xlabel="Actions", ylabel="Counts", legend=:outertopright)
-
-# Comment out for no plots
-#StatsPlots.savefig("Figures/action_counts_comparison_RI.png")

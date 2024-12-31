@@ -257,10 +257,3 @@ println("Mean: ", mean_recommended, ", Median: ", median_recommended, ", Standar
 
 println("RI current policy Action Statistics:")
 println("Mean: ", mean_nearest_hospital, ", Median: ", median_nearest_hospital, ", Standard Deviation: ", std_nearest_hospital)
-
-
-# Now plot the bar chart
-bar(all_actions, [recommended_action_values nearest_hospital_action_values], label=["Best Action" "RI current policy"], title="Action Counts Comparison", xlabel="Actions", ylabel="Counts", legend=:outertopright)
-
-# Comment out for no plots
-#StatsPlots.savefig("Figures/action_counts_comparison_RI.png")

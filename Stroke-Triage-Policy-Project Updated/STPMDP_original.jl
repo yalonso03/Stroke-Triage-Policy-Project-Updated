@@ -109,6 +109,7 @@ end
 # In: a CSV file representing hospitals
 # Out: a vector of Locations
 function csv_to_locations(file)
+
     df = CSV.read(file, DataFrame, delim=',')
     locs = []
     for row in eachrow(df)

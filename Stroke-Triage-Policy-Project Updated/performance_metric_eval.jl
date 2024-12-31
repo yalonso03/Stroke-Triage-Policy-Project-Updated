@@ -3,7 +3,7 @@ Modeling Stroke Patient Triage and Transport in CA with MDPs
 Autumn 2023 CS199/CS195 Project
 Emily Molins and Yasmine Alonso
 
-File: sims_performance_metrics.jl
+File: performance_metric_eval.jl
 --------------------
 
 Summary: This script models stroke patient triage and transport using Markov Decision Processes (MDPs) in 
