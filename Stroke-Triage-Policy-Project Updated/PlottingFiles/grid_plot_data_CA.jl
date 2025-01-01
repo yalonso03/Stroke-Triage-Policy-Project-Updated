@@ -62,7 +62,7 @@ function generate_and_save_data(grid_size, my_region, output_dir)
                     next_state_best = rand(next_state_distribution_best)
                     reward_best = reward(myMDP, sampled_start_state, recommended_action, next_state_best)
 
-                    # Calculate reward under "CA" (status quo) policy
+                    # Calculate reward under ca's status quo policy
                     nearest_hospital_action_string = current_CApolicy_action(myMDP, sampled_start_state)
                     nearest_hospital_action = string_to_enum(nearest_hospital_action_string)
                     next_state_distribution_CA = transition(myMDP, sampled_start_state, nearest_hospital_action)
@@ -81,7 +81,9 @@ function generate_and_save_data(grid_size, my_region, output_dir)
 
                     sample_count += 1  # Increment only on successful routing
                 catch e
-                    println("Error occurred during routing for cell ($i, $j), retrying: $e")
+                    #println("Error occurred during routing for cell ($i, $j), retrying: $e")
+                    println("Error occurred during routing for cell ($i, $j), retrying... ")
+
                 end
             end
 

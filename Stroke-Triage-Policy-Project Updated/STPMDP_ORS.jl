@@ -141,6 +141,8 @@ end
     γ = 0.95  # Discount factor 
     #API_KEY = ""  
 
+    transfer_times_dict = Dict()  # nested dictionary, key/values are like    start_loc_name : {end_loc_name : transfer time from start --> end}
+
 end
 
 POMDPs.discount(m::StrokeMDP) = m.γ
@@ -222,8 +224,9 @@ function calculate_travel_time(loc1::Location, loc2::Location)
     if dist_meters > 50000 # More than 100 kilometers
         return 100000000 # Indicate an error or handle accordingly
     end
-    # ORS base URL for driving directions
-    base_url = "https://woodstock.stanford.edu/ors/ors/v2/directions/driving-car"
+
+    # ORS base URL for driving directions 
+    base_url = "https://tula.stanford.edu/ors/ors/v2/directions/driving-car"
 
     # Extract lat and lon for origin and destination
     start_lat, start_lon = loc1.latlon
@@ -232,8 +235,12 @@ function calculate_travel_time(loc1::Location, loc2::Location)
     # Construct the full URL with parameters
     request_url = "$base_url?&start=$start_lon,$start_lat&end=$end_lon,$end_lat"
 
+    #! i think this makes it so that it doesn't have to keep reopening connections on every call to http get?
+    #headers = Dict("Connection" => "keep-alive")
     # Make the HTTP GET request
     response = HTTP.get(request_url)
+    #response = HTTP.get(request_url, headers) # OLD
+    #response = HTTP.request(HttpClient.pool, "GET", request_url)  # use pooling to optimize?
 
     # Check if the request was successful
     if response.status == 200
@@ -263,7 +270,27 @@ function find_nearest_CSC(m::StrokeMDP, cur_loc::Location)
     dict = Dict()
     for CSC in CSCs
         #!dist = py"time_between_coordinates"(cur_loc.latlon, CSC.latlon, m.API_KEY)
-        dist = calculate_travel_time(CSC, cur_loc)
+
+        if cur_loc.type != FIELD && haskey(m.transfer_times_dict, cur_loc.name)
+            # if current location exists as an outer key 
+            if haskey(m.transfer_times_dict[cur_loc.name], CSC.name)
+                # everything is already there!
+                dist = m.transfer_times_dict[cur_loc.name][CSC.name]
+            else 
+                # start location in outer dict, but end loc not in inner, calculate and add it 
+                dist = calculate_travel_time(CSC, cur_loc)
+                m.transfer_times_dict[cur_loc.name][CSC.name] = dist
+            end
+
+        else 
+            # current location not in outer (and therefore end loc not in inner either)
+            # init a new key (start loc) in outer with value empty dict
+            # add end loc as a value to the empty inner dict
+            dist = calculate_travel_time(CSC, cur_loc)
+            m.transfer_times_dict[cur_loc.name] = Dict()
+            m.transfer_times_dict[cur_loc.name][CSC.name] = dist
+        end
+        
         dict[dist] = CSC
     end
 
@@ -272,15 +299,34 @@ function find_nearest_CSC(m::StrokeMDP, cur_loc::Location)
 end
 
 
-# Given an instance of our StrokeMDP and a current location, return the nearest CSC (by car travel time).
+# Given an instance of our StrokeMDP and a current location, return the nearest PSC (by car travel time).
 function find_nearest_PSC(m::StrokeMDP, cur_loc::Location)
-    # Vector of all CSCs
+    # Vector of all PSCs
     PSCs = [loc for loc in m.locations if loc.type == PSC]
 
     dict = Dict()
     for PSC in PSCs
         #!dist = py"time_between_coordinates"(cur_loc.latlon, PSC.latlon, m.API_KEY)
-        dist = calculate_travel_time(PSC, cur_loc)
+        if cur_loc.type != FIELD && haskey(m.transfer_times_dict, cur_loc.name)
+            # if current location exists as an outer key 
+            if haskey(m.transfer_times_dict[cur_loc.name], PSC.name)
+                # everything is already there!
+                dist = m.transfer_times_dict[cur_loc.name][PSC.name]
+            else 
+                # start location in outer dict, but end loc not in inner, calculate and add it 
+                dist = calculate_travel_time(PSC, cur_loc)
+                m.transfer_times_dict[cur_loc.name][PSC.name] = dist
+            end
+
+        else 
+            # current location not in outer (and therefore end loc not in inner either)
+            # init a new key (start loc) in outer with value empty dict
+            # add end loc as a value to the empty inner dict
+            dist = calculate_travel_time(PSC, cur_loc)
+            m.transfer_times_dict[cur_loc.name] = Dict()
+            m.transfer_times_dict[cur_loc.name][PSC.name] = dist
+        end
+        
         dict[dist] = PSC
     end
 
@@ -296,8 +342,26 @@ function find_nearest_clinic(m::StrokeMDP, cur_loc::Location)
 
     dict = Dict()
     for clinic in clinics
-        #!dist = py"time_between_coordinates"(cur_loc.latlon, clinic.latlon, m.API_KEY)
-        dist = calculate_travel_time(clinic, cur_loc)
+        if cur_loc.type != FIELD && haskey(m.transfer_times_dict, cur_loc.name)
+            # if current location exists as an outer key 
+            if haskey(m.transfer_times_dict[cur_loc.name], clinic.name)
+                # everything is already there!
+                dist = m.transfer_times_dict[cur_loc.name][clinic.name]
+            else 
+                # start location in outer dict, but end loc not in inner, calculate and add it 
+                dist = calculate_travel_time(clinic, cur_loc)
+                m.transfer_times_dict[cur_loc.name][clinic.name] = dist
+            end
+
+        else 
+            # current location not in outer (and therefore end loc not in inner either)
+            # init a new key (start loc) in outer with value empty dict
+            # add end loc as a value to the empty inner dict
+            dist = calculate_travel_time(clinic, cur_loc)
+            m.transfer_times_dict[cur_loc.name] = Dict()
+            m.transfer_times_dict[cur_loc.name][clinic.name] = dist
+        end
+        
         dict[dist] = clinic
     end
 
@@ -312,8 +376,26 @@ function find_nearest_PSC_or_CSC(m::StrokeMDP, cur_loc::Location)
 
     dict = Dict()
     for potential in potentials
-        #! dist = py"time_between_coordinates"(cur_loc.latlon, potential.latlon, m.API_KEY)
-        dist = calculate_travel_time(potential, cur_loc)
+        if cur_loc.type != FIELD && haskey(m.transfer_times_dict, cur_loc.name)
+            # if current location exists as an outer key 
+            if haskey(m.transfer_times_dict[cur_loc.name], potential.name)
+                # everything is already there!
+                dist = m.transfer_times_dict[cur_loc.name][potential.name]
+            else 
+                # start location in outer dict, but end loc not in inner, calculate and add it 
+                dist = calculate_travel_time(potential, cur_loc)
+                m.transfer_times_dict[cur_loc.name][potential.name] = dist
+            end
+
+        else 
+            # current location not in outer (and therefore end loc not in inner either)
+            # init a new key (start loc) in outer with value empty dict
+            # add end loc as a value to the empty inner dict
+            dist = calculate_travel_time(potential, cur_loc)
+            m.transfer_times_dict[cur_loc.name] = Dict()
+            m.transfer_times_dict[cur_loc.name][potential.name] = dist
+        end
+        
         dict[dist] = potential
     end
 
@@ -330,8 +412,26 @@ function find_nearest_hospital(m::StrokeMDP, cur_loc::Location)
 
     dict = Dict()
     for potential in potentials
-        #!dist = py"time_between_coordinates"(cur_loc.latlon, potential.latlon, m.API_KEY)
-        dist = calculate_travel_time(potential, cur_loc)
+        if cur_loc.type != FIELD && haskey(m.transfer_times_dict, cur_loc.name)
+            # if current location exists as an outer key 
+            if haskey(m.transfer_times_dict[cur_loc.name], potential.name)
+                # everything is already there!
+                dist = m.transfer_times_dict[cur_loc.name][potential.name]
+            else 
+                # start location in outer dict, but end loc not in inner, calculate and add it 
+                dist = calculate_travel_time(potential, cur_loc)
+                m.transfer_times_dict[cur_loc.name][potential.name] = dist
+            end
+
+        else 
+            # current location not in outer (and therefore end loc not in inner either)
+            # init a new key (start loc) in outer with value empty dict
+            # add end loc as a value to the empty inner dict
+            dist = calculate_travel_time(potential, cur_loc)
+            m.transfer_times_dict[cur_loc.name] = Dict()
+            m.transfer_times_dict[cur_loc.name][potential.name] = dist
+        end
+        
         dict[dist] = potential
     end
 
