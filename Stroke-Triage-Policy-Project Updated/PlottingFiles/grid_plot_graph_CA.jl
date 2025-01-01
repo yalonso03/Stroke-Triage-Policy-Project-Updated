@@ -4,6 +4,8 @@
 using CSV
 using DataFrames
 using GMT
+include("grid_plot_constants.jl")  # for constants
+
 
 # Define constants
 const INPUT_DIR = "Stroke-Triage-Policy-Project Updated/PlottingFiles/grid_plot_csvs_CA"
@@ -26,6 +28,9 @@ function compute_probabilities(grid_size, input_dir)
                     probabilities_ca[i, j] += row.reward_CA
                     sample_counts[i, j] += 1
                 end
+            else
+                # Otherwise, throw an error since we're trying to access a nonexistent CSV
+                error("TRIED TO ACCESS A NON-EXISTENT CSV FILE, CHECK IF GRID_SIZE IS SET APPROPRIATELY")
             end
         end
     end
@@ -63,13 +68,13 @@ function make_plot_with_grid(grid_size, my_region, probabilities, option)
     pcolor(X, Y, probabilities, cmap=cpt, proj="merc", title=option == "smarter" ? "Optimal Policy" : "Status Quo Policy")
 
     # Add coastlines and save figure
-    output_file = "Stroke-Triage-Policy-Project Updated/PlottingFiles/grid_plot_$(option).pdf"
+    output_file = "Stroke-Triage-Policy-Project Updated/PlottingFiles/YASMINETESTgrid_plot_$(option).pdf"
     coast!(region=my_region, savefig=output_file, show=true, proj="merc")
     println("Saved plot to: $output_file")
 end
 
 # Compute probabilities from per-cell CSV files
-println("Computing probabilities from per-cell data...")
+println("Computing probabilities from per-cell data with a grid size of ", GRID_SIZE, "...")
 probabilities_best, probabilities_ca = compute_probabilities(GRID_SIZE, INPUT_DIR)
 
 # Generate plots for "CA" and "smarter" policies
