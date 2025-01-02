@@ -38,3 +38,9 @@ California. It simulates results across various different performance metrics to
 
 `simulations_CA.jl` and `simulations_RI.jl` run many simulations of a random patient (with random field location, random stroke type), and produces the recommended actions to take (via our policy, and California's current policy). Uses `STPMDP_ORS.jl` to produce the MDP.
  
+
+---
+
+Contact information:
+
+Please feel free to contact Emily Molins (emmolins AT stanford DOT edu) or Yasmine Alonso (yalonso AT stanford DOT edu) with any questions 
