@@ -4,8 +4,6 @@
 using CSV
 using DataFrames
 using GMT
-include("grid_plot_constants.jl")  # for constants
-
 
 # Define constants
 const INPUT_DIR = "Stroke-Triage-Policy-Project Updated/PlottingFiles/grid_plot_csvs_CA"
@@ -22,6 +20,16 @@ function compute_probabilities(grid_size, input_dir)
         for j in 1:grid_size
             cell_file = joinpath(input_dir, "samples_data_$(i)_$(j).csv")
             if isfile(cell_file)
+                # Check if the first line reads "error"
+                first_line = readlines(cell_file)[1]
+                if startswith(first_line, "error")
+                    println("Cell ($i, $j) contains an error, skipping.")
+                    probabilities_best[i, j] = NaN
+                    probabilities_ca[i, j] = NaN
+                    continue
+                end
+
+                # Read and process the CSV if no error is found
                 cell_samples_df = CSV.read(cell_file, DataFrame)
                 for row in eachrow(cell_samples_df)
                     probabilities_best[i, j] += row.reward_best
@@ -29,8 +37,9 @@ function compute_probabilities(grid_size, input_dir)
                     sample_counts[i, j] += 1
                 end
             else
-                # Otherwise, throw an error since we're trying to access a nonexistent CSV
-                error("TRIED TO ACCESS A NON-EXISTENT CSV FILE, CHECK IF GRID_SIZE IS SET APPROPRIATELY")
+                println("File for cell ($i, $j) does not exist, skipping.")
+                probabilities_best[i, j] = NaN
+                probabilities_ca[i, j] = NaN
             end
         end
     end
@@ -51,6 +60,7 @@ function compute_probabilities(grid_size, input_dir)
     return probabilities_best, probabilities_ca
 end
 
+
 # Function to create and save the plots
 function make_plot_with_grid(grid_size, my_region, probabilities, option)
     lon_min, lon_max, lat_min, lat_max = my_region
@@ -68,13 +78,13 @@ function make_plot_with_grid(grid_size, my_region, probabilities, option)
     pcolor(X, Y, probabilities, cmap=cpt, proj="merc", title=option == "smarter" ? "Optimal Policy" : "Status Quo Policy")
 
     # Add coastlines and save figure
-    output_file = "Stroke-Triage-Policy-Project Updated/PlottingFiles/YASMINETESTgrid_plot_$(option).pdf"
+    output_file = "Stroke-Triage-Policy-Project Updated/PlottingFiles/grid_plot_$(option).pdf"
     coast!(region=my_region, savefig=output_file, show=true, proj="merc")
     println("Saved plot to: $output_file")
 end
 
 # Compute probabilities from per-cell CSV files
-println("Computing probabilities from per-cell data with a grid size of ", GRID_SIZE, "...")
+println("Computing probabilities from per-cell data...")
 probabilities_best, probabilities_ca = compute_probabilities(GRID_SIZE, INPUT_DIR)
 
 # Generate plots for "CA" and "smarter" policies

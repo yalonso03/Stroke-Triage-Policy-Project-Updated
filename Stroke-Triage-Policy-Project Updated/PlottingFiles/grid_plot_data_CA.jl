@@ -11,7 +11,7 @@ include("../STPMDP_ORS.jl")
 include("grid_plot_constants.jl")  # for constants
 
 # Constants
-NUM_SAMPLES = 3  # probs will reset this to 10
+NUM_SAMPLES = 3
 
 # Create an instance of the MDP
 myMDP = StrokeMDP()
@@ -41,6 +41,9 @@ function generate_and_save_data(grid_size, my_region, output_dir)
             )
 
             sample_count = 0
+            retry_count = 0
+            max_retries = 5  # Maximum number of retries allowed
+
             while sample_count < NUM_SAMPLES
                 try
                     # Generate a random sample location and stroke type
@@ -80,22 +83,31 @@ function generate_and_save_data(grid_size, my_region, output_dir)
                     ))
 
                     sample_count += 1  # Increment only on successful routing
+                    retry_count = 0  # Reset retry count on success
                 catch e
-                    #println("Error occurred during routing for cell ($i, $j), retrying: $e")
-                    println("Error occurred during routing for cell ($i, $j), retrying... ")
+                    println("Error occurred during routing for cell ($i, $j), retrying: $e")
+                    retry_count += 1
 
+                    # If retries exceed the limit, write "error" and break the loop
+                    if retry_count > max_retries
+                        println("Max retries exceeded for cell ($i, $j). Writing error to CSV.")
+                        error_df = DataFrame(["error" => "Routing failed"])
+                        cell_output_file = joinpath(output_dir, "samples_data_$(i)_$(j).csv")
+                        CSV.write(cell_output_file, error_df)
+                        break
+                    end
                 end
             end
 
-            # Ensure the output directory exists
-            if !isdir(output_dir)
-                mkpath(output_dir)
+            # Save the results for the current cell to a CSV file if successful
+            if retry_count <= max_retries && sample_count == NUM_SAMPLES
+                if !isdir(output_dir)
+                    mkpath(output_dir)
+                end
+                cell_output_file = joinpath(output_dir, "samples_data_$(i)_$(j).csv")
+                CSV.write(cell_output_file, cell_samples_df)
+                println("Saved data for cell ($i, $j) to: $cell_output_file")
             end
-
-            # Save the results for the current cell to a CSV file
-            cell_output_file = joinpath(output_dir, "samples_data_$(i)_$(j).csv")
-            CSV.write(cell_output_file, cell_samples_df)
-            println("Saved data for cell ($i, $j) to: $cell_output_file")
         end
     end
 end
