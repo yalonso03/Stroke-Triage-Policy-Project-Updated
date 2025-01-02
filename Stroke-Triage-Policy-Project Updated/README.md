@@ -5,7 +5,7 @@ Notes:
 - Any files beginning with xx (e.g., xxSTPMDP.jl) are outdated and no longer used. They are just still here for our reference.
 
 
-An overview of the repo:
+An overview of the repo:\n
 **Figures** is a directory where we store all figures and plots produced in our simulations.
 
 **HospitalInfo** is a directory that stores CSV files for each region. Each CSV is a list of hospitals + relevant information about that hospital (e.g. lat/lon coordinates, hospital name, classification type of the hospital...)
